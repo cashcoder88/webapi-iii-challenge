@@ -1,6 +1,16 @@
-const express = 'express';
-
+const express = require('express');
+const db = require('./userDb');
 const router = express.Router();
+
+
+/*  
+get,
+getById,
+getUserPosts,
+insert,
+update,
+remove,
+*/
 
 router.post('/', (req, res) => {
 
@@ -11,7 +21,7 @@ router.post('/:id/posts', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-
+    res.send(`<h2>Users Router Working!</h2>`)
 });
 
 router.get('/:id', (req, res) => {
