@@ -43,8 +43,15 @@ router.put('/:id', (req, res) => {
 //custom middleware
 
 function validateUserId(req, res, next) {
-
+    const userId = getById(req.params.id)
+    if (userId) {
+        req.user = user;
+    } else {
+        res.sendStatus(400).json({message: "invalid user id"})
+    }
 };
+
+
 
 function validateUser(req, res, next) {
     if (!req.body || !req.body.name) {
