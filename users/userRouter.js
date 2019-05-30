@@ -13,8 +13,17 @@ update,
 remove,
 */
 
-router.post('/', (req, res) => {
-
+router.post('/', validatePost, (req, res) => {
+    const users = req.body;
+    db.insert(users)
+    .then(user => {
+        res.status(201).json(user)
+    })
+    .catch(err => {
+        res.status(500).json({
+            error: 'there was an error while saving user to the db'
+        })
+    })
 });
 
 router.post('/:id/posts', (req, res) => {
@@ -102,9 +111,13 @@ function validateUser(req, res, next) {
 };
 
 function validatePost(req, res, next) {
-    if (!req.body || !req.body.text) {
-        res.status(400).json({message: "missing required text field"})
-    }
+    if (!req.body) {
+        res.status(400).json({ error: { message: `Missing required post data.` }})
+      }
+    
+      if (!req.body.text) {
+        res.status(400).json({ error: { message: `Missing required text field.` }})
+      }
     next();
 };
 
