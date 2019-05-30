@@ -21,7 +21,7 @@ router.post('/:id/posts', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    res.send(`<h2>Users Router Working!</h2>`)
+    
 });
 
 router.get('/:id', (req, res) => {
@@ -49,6 +49,7 @@ function validateUserId(req, res, next) {
     } else {
         res.sendStatus(400).json({message: "invalid user id"})
     }
+    next();
 };
 
 
