@@ -28,9 +28,16 @@ router.post('/', validateUser, (req, res) => {
 });
 
 
-router.post('/:id/posts', (req, res) => {
-
+router.post('/:id/posts', validateUserId, validatePost, async (req, res) => {
+    try {
+        const post = {"user_id": req.params.id, "text": req.body.text };
+        const savedPost = await db.insert(post);
+        res.status(201).json(savedPost);
+    } catch(err) {
+        res.status(500).json({"errorMessage": "Could not save new post in database"})
+    }
 });
+
 
 router.get('/', (req, res) => {
     db.get()
@@ -56,6 +63,8 @@ router.get('/:id', (req, res) => {
         res.status(500).json({error: 'unable to get user by id'});
     })
 });
+
+
 
 router.get('/:id/posts', (req, res) => {
     const {id} = req.params;
@@ -87,22 +96,25 @@ router.delete('/:id', (req, res) => {
     })
 });
 
+
+//come back to this
 router.put('/:id', (req, res) => {
 
 });
 
 //custom middleware
-
+// come back to this
 function validateUserId(req, res, next) {
-    const userId = getById(req.params.id)
-    if (userId) {
+    const id = req.params.id
+    if (id) {
+        const user = getById(req.params.id)
         req.user = user;
+        next();
     } else {
         res.sendStatus(400).json({message: "invalid user id"})
     }
     next();
 };
-
 
 
 function validateUser(req, res, next) {
