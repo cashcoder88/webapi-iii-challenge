@@ -32,7 +32,18 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-
+    const {id} = req.params;
+    db.getById(id)
+    .then(user => {
+        if (user) {
+            res.status(200).json(user)
+        } else {
+            res.status(404).json({message: 'unable to get user with specified id'})
+        }
+    })
+    .catch(err => {
+        res.status(500).json({error: 'unable to get user by id', err});
+    })
 });
 
 router.get('/:id/posts', (req, res) => {
