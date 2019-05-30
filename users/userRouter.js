@@ -13,18 +13,20 @@ update,
 remove,
 */
 
-router.post('/', validatePost, (req, res) => {
+router.post('/', validateUser, (req, res) => {
     const users = req.body;
     db.insert(users)
-    .then(user => {
-        res.status(201).json(user)
-    })
-    .catch(err => {
-        res.status(500).json({
-            error: 'there was an error while saving user to the db'
+        .then(users => {
+            // let user = User.insert({ name: req.body.name })
+            res.status(201).json({users})
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: "There was an error while saving the user to the database"
         })
     })
 });
+
 
 router.post('/:id/posts', (req, res) => {
 
