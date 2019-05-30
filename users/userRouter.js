@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
         res.status(200).json(users)
     })
     .catch(err => {
-        res.status(500).json({error: 'unable to get users', err})
+        res.status(500).json({error: 'unable to get users'})
     })
 });
 
@@ -42,12 +42,21 @@ router.get('/:id', (req, res) => {
         }
     })
     .catch(err => {
-        res.status(500).json({error: 'unable to get user by id', err});
+        res.status(500).json({error: 'unable to get user by id'});
     })
 });
 
 router.get('/:id/posts', (req, res) => {
-
+    const {id} = req.params;
+    // console.log('params', req.params)
+    // console.log('body', req.body);
+    db.getUserPosts(id)
+    .then(posts => {
+        res.status(200).json(posts) 
+    })
+    .catch(err => {
+        res.status(500).json({error: 'unable to get user by id'});
+    })
 });
 
 router.delete('/:id', (req, res) => {
